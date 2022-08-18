@@ -21,7 +21,7 @@ Menu::macro('main', function () {
 </nav>
 ```
 
-## Installation
+## Установка
 Вы можете установить пакет через composer:
 
 ``` bash
