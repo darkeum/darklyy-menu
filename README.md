@@ -10,7 +10,7 @@ Menu::macro('main', function () {
     return Menu::new()
         ->url('/', 'Главная')
         ->route('feedback', 'Контакты')
-        ->action('PageController@about', 'О нас');
+        ->action('PageController@about', 'О нас')
         ->setActiveFromRequest();
 });
 ```
