@@ -1,0 +1,55 @@
+{
+    "name": "darkeum/darklyy-menu",
+    "description": "Генератор HTML меню для Darklyy",
+    "keywords": [
+        "darkeum",
+        "darklyy",
+        "darklyy-menu"
+    ],
+    "homepage": "https://github.com/darkeum/darklyy-menu",
+    "license": "MIT",
+    "authors": [{
+        "name": "Komarov Ivan",
+        "email": "ki@darkeum.ru",
+        "homepage": "https://darkeum.ru",
+        "role": "Developer"
+    }],
+    "require": {
+        "php": "^8.0",
+        "illuminate/auth": "^8.0|^9.0",
+        "illuminate/contracts": "^8.71|^9.0",
+        "illuminate/support": "^8.71|^9.0",
+        "psr/http-message": "^1.0",
+        "darkeum/darklyy-package-tools": "^1.0.0"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9",
+        "orchestra/testbench": "^6.23|^7.0",
+        "phpunit/phpunit": "^9.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Darkeum\\Menu\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Darkeum\\Menu\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "darklyy": {
+            "providers": [
+                "Darkeum\\Menu\\MenuServiceProvider"
+            ],
+            "aliases": {
+                "Menu": "Darkeum\\Menu\\Facades\\Menu"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
