@@ -39,6 +39,8 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
 
     protected Attributes $parentAttributes;
 
+    protected string | null $icon = null;
+
     protected function __construct(
         protected string | null $url,
         protected string $text,
@@ -48,6 +50,22 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
     }
 
     public function text(): string
+    {
+        return $this->text;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
+    public function getText(): string
     {
         return $this->text;
     }
@@ -99,6 +117,7 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
         $attributes = new Attributes(['href' => $this->url]);
         $attributes->mergeWith($this->htmlAttributes);
 
-        return $this->prepend . "<a {$attributes}>{$this->text}</a>" . $this->append;
+        // return $this->prepend . "<a {$attributes}>{$this->text}</a>" . $this->append;
+        return $this->prepend . '<a '.$attributes.'><span class="' . $this->icon . '"></span><span class="sidebar-title">'.$this->text.'</span></a>' . $this->append;
     }
 }

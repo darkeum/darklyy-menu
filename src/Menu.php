@@ -76,7 +76,7 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
      *
      * @return static
      */
-    public static function new($items = []): static
+    public static function new($items = [], $type = null): static
     {
         return new static(...array_values($items));
     }
