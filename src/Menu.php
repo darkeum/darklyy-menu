@@ -25,17 +25,23 @@ use Darkeum\Menu\Traits\Conditions as ConditionsTrait;
 use Darkeum\Menu\Traits\HasHtmlAttributes as HasHtmlAttributesTrait;
 use Darkeum\Menu\Traits\HasParentAttributes as HasParentAttributesTrait;
 use Darkeum\Menu\Traits\HasTextAttributes as HasAttributesTrait;
+use Darkeum\Menu\Traits\HasIcon as HasIconTrait;
+use Darkeum\Menu\Traits\HasText as HasTextTrait;
+use Darkeum\Menu\Traits\HasUrl as HasUrlTrait;
 use Traversable;
 
 class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAttributes, IteratorAggregate
 {
     use HasHtmlAttributesTrait;
+    use HasIconTrait;
+    use HasTextTrait;
+    use HasUrlTrait;
     use HasParentAttributesTrait;
     use ConditionsTrait;
     use HasAttributesTrait;
     use Macroable;
 
-    protected array $items = [];
+    public array $items = [];
 
     protected array $filters = [];
 
@@ -225,14 +231,22 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
         return $this;
     }
 
-    public function submenu(callable | self | Item | string $header, callable | self | null $menu = null): self
+    public function submenu(callable | self | Item | string | array $header, callable | self | null $menu = null): self
     {
         [$header, $menu] = $this->parseSubmenuArgs(func_get_args());
 
         $menu = $this->createSubmenuMenu($menu);
-
-        return $this->add($menu->prependIf($header, $header));
+        if (is_array($header)) {
+            $menu->text = (!empty($header['text']) ? $header['text'] : '');
+            $menu->url = (!empty($header['url']) ? $header['url'] : 'javascript:void(0)');
+            $menu->icon = (!empty($header['icon']) ? $header['icon'] : '');
+        } else {
+            $menu->prependIf($header, $header);
+        }
+        return $this->add($menu);
     }
+
+
 
     public function submenuIf(bool $condition, callable | self | Item | string $header, callable | self | null $menu = null): self
     {
@@ -272,7 +286,7 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
         return $header;
     }
 
-      public function each(callable $callable): self
+    public function each(callable $callable): self
     {
         $type = Reflection::firstParameterType($callable);
 
@@ -392,7 +406,7 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
 
         $this->applyToAll(function (Activatable $item) use ($callable, $type) {
 
-   
+
             if (!Reflection::itemMatchesType($item, $type)) {
                 return;
             }
@@ -505,6 +519,10 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
 
         return $clone;
     }
+    public function toArray(): array
+    {
+        return $this->items;
+    }
 
     public function render(): string
     {
@@ -513,7 +531,6 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
             : null;
 
         $contents = array_map([$this, 'renderItem'], $this->items);
-
         $wrappedContents = $tag ? $tag->withContents($contents) : implode('', $contents);
 
         if ($this->prepend instanceof Item && $this->prepend->isActive()) {

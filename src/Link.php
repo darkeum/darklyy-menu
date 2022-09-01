@@ -18,6 +18,9 @@ use Darkeum\Menu\Traits\Conditions as ConditionsTrait;
 use Darkeum\Menu\Traits\HasHtmlAttributes as HasHtmlAttributesTrait;
 use Darkeum\Menu\Traits\HasParentAttributes as HasParentAttributesTrait;
 use Darkeum\Menu\Traits\HasTextAttributes as HasAttributesTrait;
+use Darkeum\Menu\Traits\HasIcon as HasIconTrait;
+use Darkeum\Menu\Traits\HasText as HasTextTrait;
+use Darkeum\Menu\Traits\HasUrl as HasUrlTrait;
 
 class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
 {
@@ -28,6 +31,9 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
     use HasParentAttributesTrait;
     use ConditionsTrait;
     use HasAttributesTrait;
+    use HasIconTrait;
+    use HasTextTrait;
+    use HasUrlTrait;
 
     protected string $prepend = '';
 
@@ -38,37 +44,15 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
     protected Attributes $htmlAttributes;
 
     protected Attributes $parentAttributes;
+   
 
-    protected string | null $icon = null;
-
-    protected function __construct(
-        protected string | null $url,
-        protected string $text,
-    ) {
+    protected function __construct($url, $text) {
+        $this->url = $url;
+        $this->text = $text;
         $this->htmlAttributes = new Attributes();
         $this->parentAttributes = new Attributes();
     }
 
-    public function text(): string
-    {
-        return $this->text;
-    }
-
-    public function setText($text)
-    {
-        $this->text = $text;
-    }
-
-    public function setIcon($icon)
-    {
-        $this->icon = $icon;
-        return $this;
-    }
-
-    public function getText(): string
-    {
-        return $this->text;
-    }
 
     public function __toString(): string
     {
@@ -118,6 +102,6 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
         $attributes->mergeWith($this->htmlAttributes);
 
         // return $this->prepend . "<a {$attributes}>{$this->text}</a>" . $this->append;
-        return $this->prepend . '<a '.$attributes.'><span class="' . $this->icon . '"></span><span class="sidebar-title">'.$this->text.'</span></a>' . $this->append;
+        return $this->prepend . '<a ' . $attributes . '><span class="' . $this->icon . '"></span><span class="sidebar-title">' . $this->text . '</span></a>' . $this->append;
     }
 }
