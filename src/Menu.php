@@ -681,14 +681,23 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
         return $this->addIfCan($authorization, Html::raw($html));
     }
 
-    public function submenuIfCan(string | array $authorization, callable | Menu | Item $header, callable | Menu | null $menu = null): self
+    public function submenuIfCan(string | array $authorization, callable | Menu | Item |array $header, callable | Menu | null $menu = null): self
     {
         [$authorization, $header, $menu] = $this->parseSubmenuIfCanArgs(...func_get_args());
 
-        $menu = $this->createSubmenuMenu($menu);
-        $header = $this->createSubmenuHeader($header);
 
-        return $this->addIfCan($authorization, $menu->prependIf($header, $header));
+        $menu = $this->createSubmenuMenu($menu);
+        if (is_array($header)) {
+            $menu->text = (!empty($header['text']) ? $header['text'] : '');
+            $menu->url = (!empty($header['url']) ? $header['url'] : 'javascript:void(0)');
+            $menu->icon = (!empty($header['icon']) ? $header['icon'] : '');
+            $menu->badge = (isset($header['badge']) ? $header['badge'] : '');
+            $menu->badgeClass = (!empty($header['badgeClass']) ? $header['badgeClass'] : '');
+        } else {
+            $header = $this->createSubmenuHeader($header);
+            $menu->prependIf($header, $header);
+        }
+        return $this->addIfCan($authorization, $menu);
     }
 
     protected function parseSubmenuIfCanArgs($authorization, ...$args): array
