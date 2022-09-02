@@ -28,6 +28,7 @@ use Darkeum\Menu\Traits\HasTextAttributes as HasAttributesTrait;
 use Darkeum\Menu\Traits\HasIcon as HasIconTrait;
 use Darkeum\Menu\Traits\HasText as HasTextTrait;
 use Darkeum\Menu\Traits\HasUrl as HasUrlTrait;
+use Darkeum\Menu\Traits\HasBadge as HasBadgeTrait;
 use Traversable;
 
 class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAttributes, IteratorAggregate
@@ -36,6 +37,7 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
     use HasIconTrait;
     use HasTextTrait;
     use HasUrlTrait;
+    use HasBadgeTrait;
     use HasParentAttributesTrait;
     use ConditionsTrait;
     use HasAttributesTrait;
@@ -240,6 +242,8 @@ class Menu implements Htmlable, Item, Countable, HasHtmlAttributes, HasParentAtt
             $menu->text = (!empty($header['text']) ? $header['text'] : '');
             $menu->url = (!empty($header['url']) ? $header['url'] : 'javascript:void(0)');
             $menu->icon = (!empty($header['icon']) ? $header['icon'] : '');
+            $menu->badge = (isset($header['badge']) ? $header['badge'] : '');
+            $menu->badgeClass = (!empty($header['badgeClass']) ? $header['badgeClass'] : '');
         } else {
             $menu->prependIf($header, $header);
         }

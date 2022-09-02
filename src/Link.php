@@ -21,6 +21,7 @@ use Darkeum\Menu\Traits\HasTextAttributes as HasAttributesTrait;
 use Darkeum\Menu\Traits\HasIcon as HasIconTrait;
 use Darkeum\Menu\Traits\HasText as HasTextTrait;
 use Darkeum\Menu\Traits\HasUrl as HasUrlTrait;
+use Darkeum\Menu\Traits\HasBadge as HasBadgeTrait;
 
 class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
 {
@@ -34,6 +35,7 @@ class Link implements Item, HasHtmlAttributes, HasParentAttributes, Activatable
     use HasIconTrait;
     use HasTextTrait;
     use HasUrlTrait;
+    use HasBadgeTrait;
 
     protected string $prepend = '';
 
