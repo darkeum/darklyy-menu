@@ -40,7 +40,7 @@ class ActiveUrlChecker
         $itemPath = Str::removeFromStart($rootUrl, $itemPath);
         $matchPath = Str::removeFromStart($rootUrl, $matchPath);
 
-        if ($matchPath === $itemPath || Str::startsWith($matchPath, $itemPath)) {
+        if ($matchPath === $itemPath || Str::startsWith($itemPath, $matchPath)) {
             return true;
         }
 
